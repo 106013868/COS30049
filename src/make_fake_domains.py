@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 import config
 
-PROPORTIONS = {"benign": 0.66, "defacement": 0.15, "phishing": 0.14, "malware": 0.05}
+PROPORTIONS = {0: 0.66, 1: 0.34}
 
 def make_dataset(n_rows=10000, seed=42):
     rng = np.random.default_rng(seed)
