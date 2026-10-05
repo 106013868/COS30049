@@ -1,3 +1,7 @@
+"""
+data_processing.py
+cleans raw url dataset, extracts features and saves processed csv files
+"""
 import pandas as pd
 import ipaddress
 
@@ -23,7 +27,9 @@ FEATURE_COLUMNS = [
 
 # checks for https before removing protocol
 def check_https(url):
-
+    """
+    returns 1 if url starts with https, otherwise 0
+    """
     url = str(url).strip().lower()
 
     return int(
@@ -33,7 +39,9 @@ def check_https(url):
 
 # removes url prefixes
 def clean_url(url):
-
+    """
+    lowercases url and removes protocol, www and trailing slashes
+    """
     url = str(url).strip().lower()
 
     # Remove HTTP
@@ -56,7 +64,10 @@ def clean_url(url):
 
 # feature extraction
 def extract_features(url, has_https):
-
+    """
+    In: cleaned url, has_https flag
+    Out: dict of features in fixed schema order
+    """
     original_url = str(url)
 
     # Default values in case URL parsing fails

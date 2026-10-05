@@ -1,3 +1,8 @@
+"""
+config.py
+holds constants used throughout all modules
+i.e. paths, data column names
+"""
 from pathlib import Path
 
 # Constant definitions
