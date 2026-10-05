@@ -46,5 +46,6 @@ def add_domain_column(df):
 if __name__ == "__main__":
     df = load_data()
     print(df.shape)
-    print(df.columns)
+    print(df[cfg.URL_COLUMN].duplicated().sum())
+    print(df[cfg.LABEL_COLUMN].value_counts(normalize=True))
     

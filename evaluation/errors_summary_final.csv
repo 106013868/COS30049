@@ -1,0 +1,2 @@
+total_false_positives,total_false_negatives,top_domain,top_domain_false_positives,top_domain_share_percent,top10_share_percent,top_domain_in_training
+21917,13056,wikipedia.org,1339,6.109412784596432,19.65597481407127,0
