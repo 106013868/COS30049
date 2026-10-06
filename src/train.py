@@ -67,7 +67,7 @@ def predict_url(model, url):
 
 if __name__ == "__main__":
     data = load_data()
-    model = get_models()["HistGradientBoosting"]
+    model = get_models()[cfg.FINAL_MODEL]
     trained = train_final_model(model, data)
     save_model(trained)
 

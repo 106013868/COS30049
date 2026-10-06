@@ -2,7 +2,6 @@
 models.py
 defines candidate models for comparison
 """
-from sklearn.dummy import DummyClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import StandardScaler
@@ -13,7 +12,6 @@ def get_models(seed=42):
     """
     returns dict of model name to untrained model
     """
-    dummy = DummyClassifier(strategy="most_frequent")
     logReg = LogisticRegression(random_state=seed, max_iter=1000)
     logRegwithscaler = make_pipeline(StandardScaler(), LogisticRegression(random_state=seed, max_iter=1000))
     balancedLogReg = make_pipeline(StandardScaler(), LogisticRegression(random_state=seed, max_iter=1000, class_weight="balanced"))
@@ -23,7 +21,6 @@ def get_models(seed=42):
     mlp = make_pipeline(StandardScaler(), MLPClassifier(hidden_layer_sizes=(64, 32), early_stopping=True, max_iter=200, random_state=seed))
 
     return {
-        "dummy": dummy,
         "LogisticRegression": logReg,
         "LogisticRegressionWithScaler": logRegwithscaler,
         "BalancedLogisticRegression": balancedLogReg,

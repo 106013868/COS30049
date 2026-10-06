@@ -12,6 +12,7 @@ EVAL_DIR = ROOT_DIR / "evaluation"
 DATASET_PATH = ROOT_DIR / "datasets" / "processed_dataset.csv"
 FEATURES_PATH = ROOT_DIR / "datasets" / "processed_features.csv"
 MODEL_PATH = MODELS_DIR / "hist_gradient_boosting.joblib"
+FINAL_MODEL = "HistGradientBoosting" # chosen model after evaluation
 URL_COLUMN = "url"
 LABEL_COLUMN = "label"
 DOMAIN_COLUMN = "domain"

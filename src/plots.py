@@ -24,5 +24,24 @@ def plot_k_choice(chosen_k=3):
 
     plt.close(fig)
 
+def plot_model_f1(model=cfg.FINAL_MODEL):
+    results = pd.read_csv(cfg.EVAL_DIR / "comparison_final.csv")
+    results = results[results["split"] == "grouped"]
+    results = results.sort_values("f1")
+
+    colours = [ "tab:blue" if name == model else "lightgrey" for name in results["model"] ]
+
+    fig, ax = plt.subplots(figsize=(8, 4))
+    bars = ax.barh(results["model"], results["f1"], color=colours)
+    ax.bar_label(bars, fmt="%.3f", padding=3)
+    ax.set_xlabel("F1 score (grouped split)")
+    ax.set_title("Model comparison")
+    ax.set_xlim(0, 0.75)
+
+    fig.tight_layout()
+    fig.savefig(cfg.EVAL_DIR / "model_f1_comparison.png", dpi=200)
+    plt.close(fig)
+
 if __name__ == "__main__":
     plot_k_choice()
+    plot_model_f1()
