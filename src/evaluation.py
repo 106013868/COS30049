@@ -109,4 +109,4 @@ if __name__ == "__main__":
     if not cfg.EVAL_DIR.exists():
         cfg.EVAL_DIR.mkdir(parents=True, exist_ok=True)
 
-    table.to_csv(cfg.EVAL_DIR / "comparison_final.csv", index=False)
+    table.to_csv(cfg.EVAL_DIR / "comparison_final_nn.csv", index=False)

@@ -58,9 +58,48 @@ def describe_clusters(df, scaled_features):
 
     return raw_table, standardised_table
 
+def cluster_examples(df, n=5, seed=42):
+    examples = df.groupby(cfg.CLUSTER_COLUMN).sample(n=n, random_state=seed)
+    cols = [cfg.URL_COLUMN, cfg.CLUSTER_COLUMN, "url_length", "subdomain_count", "has_ip"]
+
+    non_ip = df[(df[cfg.CLUSTER_COLUMN] == 1) & (df["has_ip"] == 0)]
+    print("Cluster 1, non-IP examples:")
+    print(non_ip.sample(5, random_state=42)[cols].to_string())
+
+    return examples[cols]
+
 if __name__ == "__main__":
     df = load_data()
     df, scaled_features = prepare_cluster_data(df)
+    k_scores = choose_k(scaled_features, range(2, 9))
+    print(k_scores.round(3).to_string())
+
+    cfg.EVAL_DIR.mkdir(parents=True, exist_ok=True)
+
+    k_scores.to_csv(cfg.EVAL_DIR / "clustering_k_scores_final.csv", index=False)
+    
+    df[cfg.CLUSTER_COLUMN] = fit_clusters(scaled_features, 3)
+    print("Cluster sizes:")
+    print(df[cfg.CLUSTER_COLUMN].value_counts(normalize=True))
+    print("Label composition:")
+    print(pd.crosstab(df[cfg.CLUSTER_COLUMN], df[cfg.LABEL_COLUMN]))
+    raw_table, standardised_table = describe_clusters(df, scaled_features)
+    print("Raw means:")
+    print(raw_table.T.round(2).to_string())
+    print("Standardised differences:")
+    print(standardised_table.T.round(2).to_string())
+    raw_table.to_csv(cfg.EVAL_DIR / "clustering_raw_means_final.csv")
+    standardised_table.to_csv(cfg.EVAL_DIR / "clustering_standardised_final.csv")
+
+    pd.set_option("display.max_colwidth", None)
+    examples = cluster_examples(df, n=8)
+    examples = examples.sort_values(cfg.CLUSTER_COLUMN)
+    print(examples.to_string())
+    examples.to_csv(cfg.EVAL_DIR / "clustering_examples_final.csv")
+
+    
+    
+    """
     cluster = fit_clusters(scaled_features, k=3)
     df[cfg.CLUSTER_COLUMN] = cluster
 
@@ -76,3 +115,4 @@ if __name__ == "__main__":
         count_with_colon_slash_slash = cluster_df[cfg.URL_COLUMN].str.contains("://").sum()
         percentage_with_colon_slash_slash = (count_with_colon_slash_slash / len(cluster_df)) * 100
         print(f"Cluster {cluster_id}: {percentage_with_colon_slash_slash:.2f}% of URLs contain '://'.")
+    """
