@@ -92,6 +92,9 @@ if __name__ == "__main__":
     "microsoft.com",
     "https://support.apple.com/en-au/iphone",
     "reddit.com/r/melbourne"]
+
+    print("Running predictions on all URLs...")
+
     for url in test_urls:
         result = predict_url(loaded_model, url)
         print(f"URL: {url}, Prediction: {result[cfg.PREDICTION_COLUMN].values[0]}, Trust Score: {result[cfg.TRUST_COLUMN].values[0]}%")
