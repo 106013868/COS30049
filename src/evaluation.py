@@ -106,7 +106,6 @@ if __name__ == "__main__":
     print(table.round(3).to_string())
 
     # mkdir for evaluation results
-    if not cfg.EVAL_DIR.exists():
-        cfg.EVAL_DIR.mkdir(parents=True, exist_ok=True)
+    cfg.TABLES_DIR.mkdir(parents=True, exist_ok=True)
 
-    table.to_csv(cfg.EVAL_DIR / "comparison_final.csv", index=False)
+    table.to_csv(cfg.TABLES_DIR / "comparison_final.csv", index=False)

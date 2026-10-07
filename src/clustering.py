@@ -74,9 +74,9 @@ if __name__ == "__main__":
     k_scores = choose_k(scaled_features, range(2, 9))
     print(k_scores.round(3).to_string())
 
-    cfg.EVAL_DIR.mkdir(parents=True, exist_ok=True)
+    cfg.TABLES_DIR.mkdir(parents=True, exist_ok=True)
 
-    k_scores.to_csv(cfg.EVAL_DIR / "clustering_k_scores_final.csv", index=False)
+    k_scores.to_csv(cfg.TABLES_DIR / "clustering_k_scores_final.csv", index=False)
     
     df[cfg.CLUSTER_COLUMN] = fit_clusters(scaled_features, 3)
     print("Cluster sizes:")
@@ -88,31 +88,11 @@ if __name__ == "__main__":
     print(raw_table.T.round(2).to_string())
     print("Standardised differences:")
     print(standardised_table.T.round(2).to_string())
-    raw_table.to_csv(cfg.EVAL_DIR / "clustering_raw_means_final.csv")
-    standardised_table.to_csv(cfg.EVAL_DIR / "clustering_standardised_final.csv")
+    raw_table.to_csv(cfg.TABLES_DIR / "clustering_raw_means_final.csv")
+    standardised_table.to_csv(cfg.TABLES_DIR / "clustering_standardised_final.csv")
 
     pd.set_option("display.max_colwidth", None)
     examples = cluster_examples(df, n=8)
     examples = examples.sort_values(cfg.CLUSTER_COLUMN)
     print(examples.to_string())
-    examples.to_csv(cfg.EVAL_DIR / "clustering_examples_final.csv")
-
-    
-    
-    """
-    cluster = fit_clusters(scaled_features, k=3)
-    df[cfg.CLUSTER_COLUMN] = cluster
-
-    raw_table, standardised_table = describe_clusters(df, scaled_features)
-    print("Raw Means Table:")
-    print(raw_table.round(2).to_string())
-    print("\nStandardised Means Table:")
-    print(standardised_table.round(2).to_string())
-
-    # check: for each cluster, what percentage of its URLs contain ://.
-    for cluster_id in df[cfg.CLUSTER_COLUMN].unique():
-        cluster_df = df[df[cfg.CLUSTER_COLUMN] == cluster_id]
-        count_with_colon_slash_slash = cluster_df[cfg.URL_COLUMN].str.contains("://").sum()
-        percentage_with_colon_slash_slash = (count_with_colon_slash_slash / len(cluster_df)) * 100
-        print(f"Cluster {cluster_id}: {percentage_with_colon_slash_slash:.2f}% of URLs contain '://'.")
-    """
+    examples.to_csv(cfg.TABLES_DIR / "clustering_examples_final.csv")

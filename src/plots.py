@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import config as cfg
 
 def plot_k_choice(chosen_k=3):
-    k_scores = pd.read_csv(cfg.EVAL_DIR / "clustering_k_scores_final.csv")
+    k_scores = pd.read_csv(cfg.TABLES_DIR / "clustering_k_scores_final.csv")
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(10, 4))
     ax1.plot(k_scores["k"], k_scores["inertia"], marker="o")
     ax1.set_title("Elbow method")
@@ -20,12 +20,12 @@ def plot_k_choice(chosen_k=3):
     ax2.set_xticks(k_scores["k"])
 
     fig.tight_layout()
-    fig.savefig(cfg.EVAL_DIR / "clustering_k_choice.png", dpi=200)
+    fig.savefig(cfg.PLOTS_DIR / "clustering_k_choice.png", dpi=200)
 
     plt.close(fig)
 
 def plot_model_f1(model=cfg.FINAL_MODEL):
-    results = pd.read_csv(cfg.EVAL_DIR / "comparison_final.csv")
+    results = pd.read_csv(cfg.TABLES_DIR / "comparison_final.csv")
     results = results[results["split"] == "grouped"]
     results = results.sort_values("f1")
 
@@ -39,9 +39,12 @@ def plot_model_f1(model=cfg.FINAL_MODEL):
     ax.set_xlim(0, 0.75)
 
     fig.tight_layout()
-    fig.savefig(cfg.EVAL_DIR / "model_f1_comparison.png", dpi=200)
+    fig.savefig(cfg.PLOTS_DIR / "model_f1_comparison.png", dpi=200)
     plt.close(fig)
 
 if __name__ == "__main__":
+    cfg.TABLES_DIR.mkdir(parents=True, exist_ok=True)
+    cfg.PLOTS_DIR.mkdir(parents=True, exist_ok=True)
+    
     plot_k_choice()
     plot_model_f1()
