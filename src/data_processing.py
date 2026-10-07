@@ -272,7 +272,7 @@ if __name__ == "__main__":
     features_df["label"] = df["label"].values
 
 
-    # seperate features and label
+    # separate features and label
     X = features_df.drop(columns=["label"])
     y = features_df["label"]
 

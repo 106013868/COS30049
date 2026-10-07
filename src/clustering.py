@@ -71,7 +71,7 @@ def cluster_examples(df, n=5, seed=42):
     # cluster 1 is mostly ip urls, so check what the non-ip ones look like
     non_ip = df[(df[cfg.CLUSTER_COLUMN] == 1) & (df["has_ip"] == 0)]
     print("Cluster 1, non-IP examples:")
-    print(non_ip.sample(5, random_state=42)[cols].to_string())
+    print(non_ip.sample(5, random_state=seed)[cols].to_string())
 
     return examples[cols]
 

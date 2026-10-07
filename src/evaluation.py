@@ -60,7 +60,15 @@ def score_predictions(y_true, y_pred):
     t_neg, f_pos, f_neg, t_pos = confusion_matrix(y_true, y_pred).ravel()
 
     return {
-        "acc": accuracy, "prec": precision, "recall": recall, "f1": f1, "t_neg": t_neg, "f_pos": f_pos, "f_neg": f_neg, "t_pos": t_pos}
+        "acc": accuracy,
+        "prec": precision,
+        "recall": recall,
+        "f1": f1,
+        "t_neg": t_neg,
+        "f_pos": f_pos,
+        "f_neg": f_neg,
+        "t_pos": t_pos
+    }
 
 def compare_models(models, splits):
     """
@@ -96,9 +104,51 @@ def find_errors(results, n=10, seed=42):
     neg_samples = false_neg.sample(n=n, random_state=seed)
 
     return pos_samples, neg_samples
+
+def run_error_analysis(model, train, test):
+    """
+    Finds the model's errors on the grouped split and saves the error tables
+    """
+    results = get_test_predictions(model, train, test)
+    print(f"Total false positives: {len(results[(results[cfg.LABEL_COLUMN] == 0) & (results[cfg.PREDICTION_COLUMN] == 1)])}")
+    print(f"Total false negatives: {len(results[(results[cfg.LABEL_COLUMN] == 1) & (results[cfg.PREDICTION_COLUMN] == 0)])}")
+
+    fps, fns = find_errors(results, n=10)
+    pd.set_option("display.max_colwidth", None)
+    cols = [cfg.URL_COLUMN, cfg.LABEL_COLUMN, cfg.PREDICTION_COLUMN, cfg.PROBABILITY_COLUMN, "path_length", "url_length", "digit_count"]
+    print("False Positives:")
+    print(fps[cols].to_string())
+    print("False Negatives:")
+    print(fns[cols].to_string())
+
+    all_fps = results[(results[cfg.LABEL_COLUMN] == 0) & (results[cfg.PREDICTION_COLUMN] == 1)]
+    top_fp_domains = all_fps[cfg.DOMAIN_COLUMN].value_counts().head(10)
+    print("Top 10 domains with false positives:")
+    print(top_fp_domains)
+    top_domain = top_fp_domains.index[0]
+    top_domain_share = top_fp_domains.iloc[0] / len(all_fps) * 100
+    print(f"Domain with most false positives: {top_domain}, Share of total false positives: {top_domain_share:.1f}%")
+    top10_share = top_fp_domains.sum() / len(all_fps) * 100
+    print(f"Share of total false positives for top 10 domains: {top10_share:.1f}%")
+    top_domain_in_train = (train[cfg.DOMAIN_COLUMN] == top_domain).sum()
+
+    fps[cols].to_csv(cfg.TABLES_DIR / "errors_false_positives_final.csv", index=False)
+    fns[cols].to_csv(cfg.TABLES_DIR / "errors_false_negatives_final.csv", index=False)
+    top_fp_domains.to_csv(cfg.TABLES_DIR / "errors_top_fp_domains_final.csv")
+    all_fns = results[(results[cfg.LABEL_COLUMN] == 1) & (results[cfg.PREDICTION_COLUMN] == 0)]
+    summary = {
+        "total_false_positives": len(all_fps),
+        "total_false_negatives": len(all_fns),
+        "top_domain": top_domain,
+        "top_domain_false_positives": top_fp_domains.iloc[0],
+        "top_domain_share_percent": top_domain_share,
+        "top10_share_percent": top10_share,
+        "top_domain_in_training": top_domain_in_train
+    }
+    pd.DataFrame([summary]).to_csv(cfg.TABLES_DIR / "errors_summary_final.csv", index=False)
     
 if __name__ == "__main__":
-    print("Running checks...")
+    print("Running evaluation tests...")
     from models import get_models
     data = pdp.load_data()
 
@@ -115,3 +165,7 @@ if __name__ == "__main__":
 
     # saved for plots.py
     table.to_csv(cfg.TABLES_DIR / "comparison_final.csv", index=False)
+
+    model = get_models()[cfg.FINAL_MODEL]
+    train, test = splits["grouped"]
+    run_error_analysis(model, train, test)

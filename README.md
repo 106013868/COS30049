@@ -78,7 +78,7 @@ Cleans `malicious_phish.csv` (drops missing and duplicate URLs, strips `http(s):
 python src/evaluation.py
 ```
 
-Compares all four models on a grouped split and a random split, prints the scores, and saves them to `evaluation/tables/comparison_final.csv`. Can take a few minutes.
+Compares all seven models on a grouped split and a random split, prints the scores, and saves them to `evaluation/tables/comparison_final.csv`. Can take a few minutes.
 
 ### 3. `train.py`
 

@@ -34,7 +34,7 @@ def load_processed(dataset_path=cfg.DATASET_PATH, features_path=cfg.FEATURES_PAT
     if len(dataset) != len(features):
         raise ValueError(f"Row counts do not match: {len(dataset)} != {len(features)}")
 
-    # double check prooves both files line up row by row
+    # double check proves both files line up row by row
     if not dataset[cfg.LABEL_COLUMN].equals(features[cfg.LABEL_COLUMN]):
         raise ValueError("Labels do not match between dataset and features")
 

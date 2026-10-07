@@ -79,26 +79,28 @@ if __name__ == "__main__":
     # reload from disk to check the saved model works
     loaded_model = load_model()
     # sample urls, a mix of bare domains and full urls
-    test_urls = [    "google.com",
-    "https://www.google.com/search?q=weather+melbourne",
-    "github.com",
-    "https://github.com/scikit-learn/scikit-learn",
-    "en.wikipedia.org/wiki/Phishing",
-    "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-    "amazon.com.au",
-    "https://www.amazon.com/gp/help/customer/display.html",
-    "abc.net.au/news",
-    "https://www.bom.gov.au/vic/forecasts/melbourne.shtml",
-    "swinburne.edu.au",
-    "https://www.swin.edu.au/study/find-a-course",
-    "ato.gov.au",
-    "https://www.commbank.com.au/banking/netbank.html",
-    "ptv.vic.gov.au/journey",
-    "docs.python.org/3/library/pathlib.html",
-    "https://stackoverflow.com/questions/tagged/pandas",
-    "microsoft.com",
-    "https://support.apple.com/en-au/iphone",
-    "reddit.com/r/melbourne"]
+    test_urls = [
+        "google.com",
+        "https://www.google.com/search?q=weather+melbourne",
+        "github.com",
+        "https://github.com/scikit-learn/scikit-learn",
+        "en.wikipedia.org/wiki/Phishing",
+        "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+        "amazon.com.au",
+        "https://www.amazon.com/gp/help/customer/display.html",
+        "abc.net.au/news",
+        "https://www.bom.gov.au/vic/forecasts/melbourne.shtml",
+        "swinburne.edu.au",
+        "https://www.swin.edu.au/study/find-a-course",
+        "ato.gov.au",
+        "https://www.commbank.com.au/banking/netbank.html",
+        "ptv.vic.gov.au/journey",
+        "docs.python.org/3/library/pathlib.html",
+        "https://stackoverflow.com/questions/tagged/pandas",
+        "microsoft.com",
+        "https://support.apple.com/en-au/iphone",
+        "reddit.com/r/melbourne"
+    ]
 
     print("Running predictions on all URLs...")
 
