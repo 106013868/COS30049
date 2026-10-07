@@ -16,6 +16,7 @@ def grouped_split(df, seed=42):
     """
     targets = df[cfg.LABEL_COLUMN]
     groups = df[cfg.DOMAIN_COLUMN]
+    # 5 folds, only the first is used so about 20% of domains go to test
     splitter = StratifiedGroupKFold(n_splits=5, shuffle=True, random_state=seed)
     train_idx, test_idx = next(splitter.split(df, targets, groups))
     train = df.iloc[train_idx]
@@ -55,6 +56,7 @@ def score_predictions(y_true, y_pred):
     recall = recall_score(y_true, y_pred, zero_division=0)
     f1 = f1_score(y_true, y_pred, zero_division=0)
 
+    # true negative, false positive, false negative, true positive
     t_neg, f_pos, f_neg, t_pos = confusion_matrix(y_true, y_pred).ravel()
 
     return {
@@ -86,7 +88,9 @@ def find_errors(results, n=10, seed=42):
     """
     returns n random false positives and n random false negatives
     """
+    # false positive is a safe url predicted malicious
     false_pos = results[(results[cfg.LABEL_COLUMN] == 0) & (results[cfg.PREDICTION_COLUMN] == 1)]
+    # false negative is a malicious url predicted safe
     false_neg = results[(results[cfg.LABEL_COLUMN] == 1) & (results[cfg.PREDICTION_COLUMN] == 0)]
     pos_samples = false_pos.sample(n=n, random_state=seed)
     neg_samples = false_neg.sample(n=n, random_state=seed)
@@ -98,6 +102,7 @@ if __name__ == "__main__":
     from models import get_models
     data = pdp.load_data()
 
+    # grouped keeps each domain on one side only, random does not
     splits = {
         "grouped": grouped_split(data),
         "random": random_split(data)
@@ -108,4 +113,5 @@ if __name__ == "__main__":
     # mkdir for evaluation results
     cfg.TABLES_DIR.mkdir(parents=True, exist_ok=True)
 
+    # saved for plots.py
     table.to_csv(cfg.TABLES_DIR / "comparison_final.csv", index=False)

@@ -17,8 +17,10 @@ def load_data():
     else:
         raise FileNotFoundError("Processed dataset or features not found. Please run the data processing script first.")
 
+    # domain is used to group urls in the grouped split
     data = add_domain_column(data)
 
+    # keep url, label, domain and feature columns only
     return data[[cfg.URL_COLUMN, cfg.LABEL_COLUMN, cfg.DOMAIN_COLUMN] + cfg.FEATURE_COLUMNS]
 
 def load_processed(dataset_path=cfg.DATASET_PATH, features_path=cfg.FEATURES_PATH):
@@ -63,6 +65,7 @@ def add_domain_column(df):
     return df
 
 if __name__ == "__main__":
+    # quick check of shape, duplicate urls and class balance
     df = load_data()
     print(df.shape)
     print(df[cfg.URL_COLUMN].duplicated().sum())

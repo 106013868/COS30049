@@ -1,4 +1,4 @@
-## PhishLens
+# PhishLens
 COS30049 Computing Technology Innovation Project, Assignment 2.
 
 PhishLens is an offline phishing URL detector that scores how trustworthy a link is from its text alone, without ever visiting the site.
@@ -15,7 +15,7 @@ PhishLens is an offline phishing URL detector that scores how trustworthy a link
 
 ## Setup
 
-From the project root, create a virtual environment and install the packages:
+Python 3.12 or later required. From the project root, create a virtual environment and install the packages:
 
 ```bash
 python -m venv .venv
@@ -70,7 +70,7 @@ cd datasets
 python ../src/data_processing.py
 ```
 
-Cleans `malicious_phish.csv` (drops missing and duplicate URLs, strips `http(s)://`, `www.` and trailing slashes, maps labels to 0/1), extracts the 10 URL features, and writes `processed_dataset.csv` and `processed_features.csv` into the folder it is run from, so run it from `datasets/`.
+Cleans `malicious_phish.csv` (drops missing and duplicate URLs, strips `http(s)://`, `www.` and trailing slashes, maps labels to 0/1), extracts the 9 URL features, and writes `processed_dataset.csv` and `processed_features.csv` into the folder it is run from, so run it from `datasets/`.
 
 ### 2. `evaluation.py`
 
@@ -108,12 +108,13 @@ Draws the k-choice chart and the model F1 comparison chart and saves them to `ev
 
 ```
 .
+├── .gitignore
 ├── README.md
 ├── requirements.txt
 ├── datasets/
 ├── evaluation/
 │   ├── tables/
-│   ├── plots/
+│   └── plots/
 ├── models/
 └── src/
     ├── config.py                 paths, column names, feature list

@@ -68,6 +68,7 @@ def extract_features(url, has_https):
     In: cleaned url, has_https flag
     Out: dict of features in fixed schema order
     """
+    # url is already cleaned, so protocol and www are gone
     original_url = str(url)
 
     # Default values in case URL parsing fails

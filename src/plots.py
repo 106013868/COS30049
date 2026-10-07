@@ -1,10 +1,19 @@
+"""
+plots.py
+draws charts from the saved evaluation and clustering tables
+"""
+
 import pandas as pd
 import matplotlib.pyplot as plt
 import config as cfg
 
 def plot_k_choice(chosen_k=3):
+    """draws elbow and silhouette charts side by side, dashed line marks the chosen k"""
+
     k_scores = pd.read_csv(cfg.TABLES_DIR / "clustering_k_scores_final.csv")
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(10, 4))
+
+    # elbow plot
     ax1.plot(k_scores["k"], k_scores["inertia"], marker="o")
     ax1.set_title("Elbow method")
     ax1.set_xlabel("Number of clusters (k)")
@@ -12,6 +21,7 @@ def plot_k_choice(chosen_k=3):
     ax1.axvline(chosen_k, linestyle="--", color="grey")
     ax1.set_xticks(k_scores["k"])
 
+    # silhouette plot
     ax2.plot(k_scores["k"], k_scores["silhouette_score"], marker="o")
     ax2.set_title("Silhouette score")
     ax2.set_xlabel("Number of clusters (k)")
@@ -25,10 +35,15 @@ def plot_k_choice(chosen_k=3):
     plt.close(fig)
 
 def plot_model_f1(model=cfg.FINAL_MODEL):
+    """draws f1 per model on the grouped split, final model highlighted"""
+
     results = pd.read_csv(cfg.TABLES_DIR / "comparison_final.csv")
+    # grouped split only
     results = results[results["split"] == "grouped"]
+    # lowest to highest so the best model sits at the top
     results = results.sort_values("f1")
 
+    # final model in blue, others grey
     colours = [ "tab:blue" if name == model else "lightgrey" for name in results["model"] ]
 
     fig, ax = plt.subplots(figsize=(8, 4))
@@ -43,8 +58,9 @@ def plot_model_f1(model=cfg.FINAL_MODEL):
     plt.close(fig)
 
 if __name__ == "__main__":
+    # make sure output folders exist
     cfg.TABLES_DIR.mkdir(parents=True, exist_ok=True)
     cfg.PLOTS_DIR.mkdir(parents=True, exist_ok=True)
-    
+
     plot_k_choice()
     plot_model_f1()
