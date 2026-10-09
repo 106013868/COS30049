@@ -8,7 +8,6 @@ from prepare_data import load_data
 from models import get_models
 import joblib
 import pandas as pd
-from data_processing import extract_features, clean_url, check_https
 
 def train_final_model(model, df):
     """
@@ -33,5 +32,11 @@ if __name__ == "__main__":
     # train final model on the full dataset and save it
     data = load_data()
     model = get_models()[cfg.FINAL_MODEL]
+
+    print(f"Training chosen model {cfg.FINAL_MODEL}")
     trained = train_final_model(model, data)
+    
+    print("Saving model...")
     save_model(trained)
+    
+    print("Done.")
