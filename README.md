@@ -5,6 +5,16 @@ PhishLens is an offline phishing URL detector that scores how trustworthy a link
 
 - **Repository:** https://github.com/106013868/COS30049
 
+## Quick start
+Follow the setup instructions below to setup an environment and install required tools, then run:
+
+```bash
+python predict.py "<url>"
+```
+
+Be sure to include the double quotation marks ("") around the url.
+The tool will output a prediction (phishing or safe), and a trust score.
+
 ## Team
 
 | Name | Student ID |
@@ -108,6 +118,7 @@ Draws the k-choice chart and the model F1 comparison chart and saves them to `ev
 
 ```
 .
+├── predict.py          Command-line tool for parsing URLs
 ├── .gitignore
 ├── README.md
 ├── requirements.txt
@@ -122,6 +133,7 @@ Draws the k-choice chart and the model F1 comparison chart and saves them to `ev
     ├── prepare_data.py           loads processed CSVs, adds domain column
     ├── models.py                 candidate models
     ├── evaluation.py             grouped and random split comparison
+    ├── inference.py              runs predictions on unseen data
     ├── train.py                  train, save, load, predict
     ├── clustering.py             k-means on malicious URLs
     └── plots.py                  charts from the saved tables

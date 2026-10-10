@@ -8,7 +8,7 @@ from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_sc
 from sklearn.base import clone
 import config as cfg
 import prepare_data as pdp
-from predict import predict
+from inference import predict
 
 def grouped_split(df, seed=42):
     """
