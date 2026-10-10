@@ -73,16 +73,7 @@ PhishLens uses two public Kaggle datasets.
 
 Run the scripts in this order. Evaluation, training, clustering and plots need the processed CSVs in `datasets/`. `plots.py` also needs the tables from `evaluation.py` and `clustering.py`.
 
-### 1. `data_processing.py`
-
-```bash
-cd datasets
-python ../src/data_processing.py
-```
-
-Cleans `malicious_phish.csv` (drops missing and duplicate URLs, strips `http(s)://`, `www.` and trailing slashes, maps labels to 0/1), extracts the 9 URL features, and writes `processed_dataset.csv` and `processed_features.csv` into the folder it is run from, so run it from `datasets/`.
-
-### 2. `evaluation.py`
+### 1. `evaluation.py`
 
 ```bash
 python src/evaluation.py
@@ -90,7 +81,7 @@ python src/evaluation.py
 
 Compares all seven models on a grouped split and a random split, prints the scores, and saves them to `evaluation/tables/comparison_final.csv`. Can take a few minutes.
 
-### 3. `train.py`
+### 2. `train.py`
 
 ```bash
 python src/train.py
@@ -98,7 +89,7 @@ python src/train.py
 
 Trains the final model (balanced HistGradientBoosting) on the full dataset, saves it to `models/hist_gradient_boosting.joblib`, and prints predictions for 20 sample URLs.
 
-### 4. `clustering.py`
+### 3. `clustering.py`
 
 ```bash
 python src/clustering.py
@@ -106,7 +97,7 @@ python src/clustering.py
 
 Runs k-means on the malicious URLs only (k = 2 to 8, final k = 3) and saves the k scores, cluster means and example URLs to `evaluation/tables/clustering_*_final.csv`.
 
-### 5. `plots.py`
+### 4. `plots.py`
 
 ```bash
 python src/plots.py
